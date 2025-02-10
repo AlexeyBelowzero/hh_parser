@@ -12,7 +12,6 @@ from datetime import datetime, timedelta, date
 import requests
 import json
 
-
 # Функция для проверки, можно ли отправлять новую вакансию.
 # Если за текущую неделю отправлено меньше 3 вакансий, возвращает имя ветки для отправки,
 # иначе – ветку пропуска.
@@ -42,15 +41,14 @@ def should_send():
         # Иначе – выбираем ветку, которая ничего не делает
         return "skip_email"
 
-
 # Функция для получения вакансии с hh.ru и подготовки данных для письма.
 def fetch_and_send(**kwargs):
     # Адрес API hh.ru и параметры запроса
     url = "https://api.hh.ru/vacancies"
     params = {
         "text": "Data engineer",  # поисковый запрос
-        "area": 1,  # код региона (можно изменить)
-        "per_page": 20,  # число вакансий на странице
+        "area": 1,                # код региона (можно изменить)
+        "per_page": 20,           # число вакансий на странице
     }
 
     # Отправляем GET-запрос к API
@@ -86,7 +84,6 @@ def fetch_and_send(**kwargs):
     # Сохраняем отформатированный HTML через XCom для использования в EmailOperator
     kwargs["ti"].xcom_push(key="vacancy_html", value=vacancy_html)
 
-
 # Аргументы по умолчанию для DAG
 default_args = {
     'owner': 'airflow',
@@ -99,12 +96,13 @@ default_args = {
 
 # Создаём DAG, который будет запускаться каждые 20 минут
 with DAG(
-        'hh_vacancies_test_dag',
-        default_args=default_args,
-        schedule_interval="*/20 * * * *",  # каждые 20 минут
-        catchup=False,
-        description="DAG для тестирования отправки вакансий (максимум 3 за неделю)"
+    'hh_vacancies_02',
+    default_args=default_args,
+    schedule_interval="*/20 * * * *",  # каждые 20 минут
+    catchup=False,
+    description="DAG для тестирования отправки вакансий (максимум 3 за неделю)"
 ) as dag:
+
     # Задача-ветвление: проверяет, можно ли отправлять вакансию
     check_send = BranchPythonOperator(
         task_id='should_send',
