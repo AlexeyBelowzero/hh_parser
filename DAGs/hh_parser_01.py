@@ -96,7 +96,7 @@ default_args = {
 
 # Создаём DAG, который будет запускаться каждые 20 минут
 with DAG(
-    'hh_vacancies_02',
+    'hh_vacancies_test_dag_1',
     default_args=default_args,
     schedule_interval="*/20 * * * *",  # каждые 20 минут
     catchup=False,
