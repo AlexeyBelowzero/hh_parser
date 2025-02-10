@@ -87,7 +87,7 @@ default_args = {
 }
 
 with DAG(
-    'hh_vacancies_test_dag',
+    'hh_vacancies_test_dag_2',
     default_args=default_args,
     schedule_interval="*/20 * * * *",  # каждые 20 минут
     catchup=False,
