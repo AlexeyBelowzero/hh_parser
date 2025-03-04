@@ -18,7 +18,7 @@ def get_steam_games():
             'name': category['name'],
             'discount': category['discount_percent'],
             'price': category['final_price'],
-            'url': category['store_url']
+            'url': category.get('store_url', 'URL не найден')
         }
         top_games.append(game_info)
 
